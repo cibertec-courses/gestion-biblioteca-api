@@ -19,7 +19,7 @@ namespace gestion_biblioteca_api.Migrations
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.Autor", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.Autor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,7 +52,7 @@ namespace gestion_biblioteca_api.Migrations
                     b.ToTable("autores");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.Categoria", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.Categoria", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,7 +75,7 @@ namespace gestion_biblioteca_api.Migrations
                     b.ToTable("categorias");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.Libro", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.Libro", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,7 +117,7 @@ namespace gestion_biblioteca_api.Migrations
                     b.ToTable("libros");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.LibroCategoria", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.LibroCategoria", b =>
                 {
                     b.Property<int>("LibroId")
                         .HasColumnType("int")
@@ -134,7 +134,7 @@ namespace gestion_biblioteca_api.Migrations
                     b.ToTable("libro_categorias");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.Prestamo", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.Prestamo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -170,9 +170,9 @@ namespace gestion_biblioteca_api.Migrations
                     b.ToTable("prestamos");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.Libro", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.Libro", b =>
                 {
-                    b.HasOne("gestor_biblioteca_api.Models.Autor", "Autor")
+                    b.HasOne("gestion_biblioteca_api.Models.Autor", "Autor")
                         .WithMany("Libros")
                         .HasForeignKey("AutorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -181,15 +181,15 @@ namespace gestion_biblioteca_api.Migrations
                     b.Navigation("Autor");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.LibroCategoria", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.LibroCategoria", b =>
                 {
-                    b.HasOne("gestor_biblioteca_api.Models.Categoria", "Categoria")
+                    b.HasOne("gestion_biblioteca_api.Models.Categoria", "Categoria")
                         .WithMany("LibroCategorias")
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("gestor_biblioteca_api.Models.Libro", "Libro")
+                    b.HasOne("gestion_biblioteca_api.Models.Libro", "Libro")
                         .WithMany("LibroCategorias")
                         .HasForeignKey("LibroId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -200,9 +200,9 @@ namespace gestion_biblioteca_api.Migrations
                     b.Navigation("Libro");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.Prestamo", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.Prestamo", b =>
                 {
-                    b.HasOne("gestor_biblioteca_api.Models.Libro", "Libro")
+                    b.HasOne("gestion_biblioteca_api.Models.Libro", "Libro")
                         .WithMany("Prestamos")
                         .HasForeignKey("LibroId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -211,17 +211,17 @@ namespace gestion_biblioteca_api.Migrations
                     b.Navigation("Libro");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.Autor", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.Autor", b =>
                 {
                     b.Navigation("Libros");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.Categoria", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.Categoria", b =>
                 {
                     b.Navigation("LibroCategorias");
                 });
 
-            modelBuilder.Entity("gestor_biblioteca_api.Models.Libro", b =>
+            modelBuilder.Entity("gestion_biblioteca_api.Models.Libro", b =>
                 {
                     b.Navigation("LibroCategorias");
 

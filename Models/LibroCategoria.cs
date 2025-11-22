@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace gestor_biblioteca_api.Models
+namespace gestion_biblioteca_api.Models
 {
     [Table("libro_categorias")]
     public class LibroCategoria

@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace gestor_biblioteca_api.Models
+namespace gestion_biblioteca_api.Models
 {
     [Table("prestamos")]
     public class Prestamo
