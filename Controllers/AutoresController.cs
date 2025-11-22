@@ -8,11 +8,11 @@ namespace gestion_biblioteca_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AutoresContoller : ControllerBase
+    public class AutoresController : ControllerBase
     {
         private readonly BibliotecaContext _context;
 
-        public AutoresContoller(BibliotecaContext context)
+        public AutoresController(BibliotecaContext context)
         {
             _context = context;
         }
