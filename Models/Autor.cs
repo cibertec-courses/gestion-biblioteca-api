@@ -17,7 +17,7 @@ namespace gestor_biblioteca_api.Models
 
         [Required(ErrorMessage = "El apellido es obligatorio")]
         [StringLength(100)]
-        [Column("nombre")]
+        [Column("apellido")]
         public string Apellido { get; set; } = string.Empty;
 
         [StringLength(50)]
