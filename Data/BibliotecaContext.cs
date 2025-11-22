@@ -1,7 +1,7 @@
-using gestor_biblioteca_api.Models;
+using gestion_biblioteca_api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace gestor_biblioteca_api.Data
+namespace gestion_biblioteca_api.Data
 {
     public class BibliotecaContext : DbContext
     {
