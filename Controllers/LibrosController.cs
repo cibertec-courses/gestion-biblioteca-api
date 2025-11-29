@@ -12,26 +12,42 @@ namespace gestion_biblioteca_api.Controllers
     public class LibrosController : ControllerBase
     {
         private readonly BibliotecaContext _context;
-        
+
         public LibrosController(BibliotecaContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Libro>>> GetLibros()
+        public async Task<ActionResult<IEnumerable<LibroDTO>>> GetLibros()
         {
-            return await _context.Libros.ToListAsync();
+            var libros = await _context.Libros
+                        .Include(l => l.Autor)!
+                        .Include(l => l.LibroCategorias)!
+                            .ThenInclude(lc => lc.Categoria)
+                        .ToListAsync();
+            var librosDTO = libros.Select(l => new LibroDTO
+            {
+                Id = l.Id,
+                Titulo = l.Titulo,
+                ISBN = l.ISBN,
+                FechaPublicacion = l.FechaPublicacion,
+                NumeroPaginas = l.NumeroPaginas,
+                Disponible = l.Disponible,
+                Autor = l.Autor != null ? $"{l.Autor.Nombre} {l.Autor.Apellido}" : "Sin Autor",
+                Categorias = l.LibroCategorias != null ? l.LibroCategorias.Select(lc => lc.Categoria!.Nombre).ToList() : new List<string>()
+            }).ToList();
+            return librosDTO;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<LibroDTO>> GetLibro(int id)
         {
             var libro = await _context.Libros
-                                        .Include(l => l.Autor)
-                                        .Include(l => l.LibroCategorias)
-                                            .ThenInclude(lc => lc.Categoria)
-                                        .FirstOrDefaultAsync(l => l.Id == id);
+                        .Include(l => l.Autor)!
+                        .Include(l => l.LibroCategorias)!
+                            .ThenInclude(lc => lc.Categoria)
+                        .FirstOrDefaultAsync(l => l.Id == id);
 
             if (libro == null)
             {
@@ -46,8 +62,8 @@ namespace gestion_biblioteca_api.Controllers
                 FechaPublicacion = libro.FechaPublicacion,
                 NumeroPaginas = libro.NumeroPaginas,
                 Disponible = libro.Disponible,
-                Autor = $"{libro.Autor.Nombre} {libro.Autor.Apellido}",
-                Categorias = libro.LibroCategorias.Select(lc => lc.Categoria.Nombre).ToList()
+                Autor = $"{libro.Autor!.Nombre} {libro.Autor.Apellido}",
+                Categorias = libro.LibroCategorias!.Select(lc => lc.Categoria!.Nombre).ToList()
             };
 
             return LibroDTO;
