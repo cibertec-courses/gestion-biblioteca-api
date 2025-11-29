@@ -1,4 +1,5 @@
 
+using AutoMapper;
 using gestion_biblioteca_api.Data;
 using gestion_biblioteca_api.DTOs;
 using gestion_biblioteca_api.Models;
@@ -12,10 +13,12 @@ namespace gestion_biblioteca_api.Controllers
     public class LibrosController : ControllerBase
     {
         private readonly BibliotecaContext _context;
+        private readonly IMapper _mapper;
 
-        public LibrosController(BibliotecaContext context)
+        public LibrosController(BibliotecaContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -49,24 +52,13 @@ namespace gestion_biblioteca_api.Controllers
                 query = query.Where(l => l.Titulo.Contains(buscar));
             }
 
-
             var libros = await query
                 .Skip((pagina - 1) * cantidad)
                 .Take(cantidad)
                 .ToListAsync();
 
 
-            var librosDTO = libros.Select(l => new LibroDTO
-            {
-                Id = l.Id,
-                Titulo = l.Titulo,
-                ISBN = l.ISBN,
-                FechaPublicacion = l.FechaPublicacion,
-                NumeroPaginas = l.NumeroPaginas,
-                Disponible = l.Disponible,
-                Autor = l.Autor != null ? $"{l.Autor.Nombre} {l.Autor.Apellido}" : "Sin Autor",
-                Categorias = l.LibroCategorias != null ? l.LibroCategorias.Select(lc => lc.Categoria!.Nombre).ToList() : new List<string>()
-            }).ToList();
+            var librosDTO = _mapper.Map<List<LibroDTO>>(libros);
             return librosDTO;
         }
 
@@ -84,17 +76,7 @@ namespace gestion_biblioteca_api.Controllers
                 return NotFound();
             }
 
-            var LibroDTO = new LibroDTO
-            {
-                Id = libro.Id,
-                Titulo = libro.Titulo,
-                ISBN = libro.ISBN,
-                FechaPublicacion = libro.FechaPublicacion,
-                NumeroPaginas = libro.NumeroPaginas,
-                Disponible = libro.Disponible,
-                Autor = libro.Autor != null ? $"{libro.Autor!.Nombre} {libro.Autor.Apellido}" : "Sin Autor",
-                Categorias = libro.LibroCategorias?.Where(lc => lc.Categoria != null).Select(lc => lc.Categoria!.Nombre).ToList() ?? new List<string>()
-            };
+            var LibroDTO = _mapper.Map<LibroDTO>(libro);
 
             return LibroDTO;
         }

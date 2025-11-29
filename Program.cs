@@ -2,6 +2,7 @@
 
 using DotNetEnv;
 using gestion_biblioteca_api.Data;
+using gestion_biblioteca_api.Profiles;
 using Microsoft.EntityFrameworkCore;
 
 Env.Load();
@@ -32,6 +33,8 @@ builder.Services.AddControllers()
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
