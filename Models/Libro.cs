@@ -34,11 +34,11 @@ namespace gestion_biblioteca_api.Models
         public int AutorId { get; set; }
 
         [ForeignKey("AutorId")]
-        public Autor Autor { get; set; } = null!;
+        public Autor? Autor { get; set; } = null!;
 
-        public ICollection<LibroCategoria> LibroCategorias { get; set; } = new List<LibroCategoria>();
+        public ICollection<LibroCategoria>? LibroCategorias { get; set; } = new List<LibroCategoria>();
 
-        public ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();
+        public ICollection<Prestamo>? Prestamos { get; set; } = new List<Prestamo>();
 
     }
 }
