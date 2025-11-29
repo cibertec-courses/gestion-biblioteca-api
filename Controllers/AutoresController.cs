@@ -30,5 +30,13 @@ namespace gestion_biblioteca_api.Controllers
             return autor == null? NotFound() : autor;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Autor>> PostAutor(Autor autor)
+        {
+            _context.Autores.Add(autor);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetAutor),new {id = autor.Id}, autor);
+        }
+
     }
 }
