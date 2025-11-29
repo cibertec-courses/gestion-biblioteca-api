@@ -13,10 +13,10 @@ namespace gestion_biblioteca_api.Models
         public int CategoriaId { get; set; }
 
         [ForeignKey("LibroId")]
-        public Libro Libro { get; set; } = null!;
+        public Libro? Libro { get; set; } = null!;
 
         [ForeignKey("CategoriaId")]
-        public Categoria Categoria { get; set; } = null!;
+        public Categoria? Categoria { get; set; } = null!;
 
 
         

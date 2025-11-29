@@ -31,7 +31,7 @@ namespace gestion_biblioteca_api.Models
         public bool Devuelto { get; set; }= false;
 
         [ForeignKey("LibroId")]
-        public Libro Libro{ get; set; } = null!;
+        public Libro? Libro{ get; set; } = null!;
 
     }
 }
