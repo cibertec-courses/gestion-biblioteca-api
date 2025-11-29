@@ -19,13 +19,43 @@ namespace gestion_biblioteca_api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LibroDTO>>> GetLibros()
+        public async Task<ActionResult<IEnumerable<LibroDTO>>> GetLibros(
+            [FromQuery] bool? disponible,
+            [FromQuery] int? autorId,
+            [FromQuery] string? buscar,
+            [FromQuery] int pagina = 1,
+            [FromQuery] int cantidad = 10
+        )
         {
-            var libros = await _context.Libros
-                        .Include(l => l.Autor)!
+
+            var query = _context.Libros
+                        .Include(l => l.Autor)
                         .Include(l => l.LibroCategorias)!
                             .ThenInclude(lc => lc.Categoria)
-                        .ToListAsync();
+                        .AsQueryable();
+
+            if (disponible.HasValue)
+            {
+                query = query.Where(l => l.Disponible == disponible.Value);
+            }
+
+            if (autorId.HasValue)
+            {
+                query = query.Where(l => l.AutorId == autorId.Value);
+            }
+
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                query = query.Where(l => l.Titulo.Contains(buscar));
+            }
+
+
+            var libros = await query
+                .Skip((pagina - 1) * cantidad)
+                .Take(cantidad)
+                .ToListAsync();
+
+
             var librosDTO = libros.Select(l => new LibroDTO
             {
                 Id = l.Id,
@@ -62,8 +92,8 @@ namespace gestion_biblioteca_api.Controllers
                 FechaPublicacion = libro.FechaPublicacion,
                 NumeroPaginas = libro.NumeroPaginas,
                 Disponible = libro.Disponible,
-                Autor = $"{libro.Autor!.Nombre} {libro.Autor.Apellido}",
-                Categorias = libro.LibroCategorias!.Select(lc => lc.Categoria!.Nombre).ToList()
+                Autor = libro.Autor != null ? $"{libro.Autor!.Nombre} {libro.Autor.Apellido}" : "Sin Autor",
+                Categorias = libro.LibroCategorias?.Where(lc => lc.Categoria != null).Select(lc => lc.Categoria!.Nombre).ToList() ?? new List<string>()
             };
 
             return LibroDTO;
