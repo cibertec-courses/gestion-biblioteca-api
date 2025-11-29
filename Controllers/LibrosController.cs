@@ -1,5 +1,6 @@
 
 using gestion_biblioteca_api.Data;
+using gestion_biblioteca_api.DTOs;
 using gestion_biblioteca_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ namespace gestion_biblioteca_api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Libro>> GetLibro(int id)
+        public async Task<ActionResult<LibroDTO>> GetLibro(int id)
         {
             var libro = await _context.Libros
                                         .Include(l => l.Autor)
@@ -37,7 +38,19 @@ namespace gestion_biblioteca_api.Controllers
                 return NotFound();
             }
 
-            return libro;
+            var LibroDTO = new LibroDTO
+            {
+                Id = libro.Id,
+                Titulo = libro.Titulo,
+                ISBN = libro.ISBN,
+                FechaPublicacion = libro.FechaPublicacion,
+                NumeroPaginas = libro.NumeroPaginas,
+                Disponible = libro.Disponible,
+                Autor = $"{libro.Autor.Nombre} {libro.Autor.Apellido}",
+                Categorias = libro.LibroCategorias.Select(lc => lc.Categoria.Nombre).ToList()
+            };
+
+            return LibroDTO;
         }
 
         [HttpPost]
