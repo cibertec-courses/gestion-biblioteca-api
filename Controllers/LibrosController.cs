@@ -26,7 +26,11 @@ namespace gestion_biblioteca_api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Libro>> GetLibro(int id)
         {
-            var libro = await _context.Libros.FirstOrDefaultAsync(l => l.Id == id);
+            var libro = await _context.Libros
+                                        .Include(l => l.Autor)
+                                        .Include(l => l.LibroCategorias)
+                                            .ThenInclude(lc => lc.Categoria)
+                                        .FirstOrDefaultAsync(l => l.Id == id);
 
             if (libro == null)
             {
