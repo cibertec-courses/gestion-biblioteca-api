@@ -2,13 +2,12 @@
 
 using gestion_biblioteca_api.Data;
 using gestion_biblioteca_api.Models;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace gestion_biblioteca_api.Controllers
 {
-    [Route ("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CategoriasController : ControllerBase
     {
